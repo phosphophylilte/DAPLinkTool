@@ -1,0 +1,127 @@
+ QMainWindow {
+    background-color: #2E3B4E;
+    border: none;
+    color: white;
+    font-family: 'Segoe UI', sans-serif;
+    font-size: 12pt;
+}
+
+ QMainWindow::title {
+    background-color: #2E3B4E;
+    border: none;
+}
+
+ QPushButton {
+    background: qlineargradient(x1: 0, y1: 0, x2: 1, y2: 1,
+    stop: 0 #4C5B6D, stop: 1 #2A3A4A);
+    border: 1px solid #3A4A5A;
+    color: white;
+    font-family: "Microsoft YaHei";
+    font-size: 14px;
+    font-weight: bold;
+    padding: 4px 8px;
+    border-radius: 11px;
+    box-shadow: 1px 4px 6px rgba(0, 0, 0, 0.3);
+    transition: all 0.3s ease-out;
+    cursor: pointer;
+}
+
+ QPushButton:hover {
+    background: qlineargradient(x1: 0, y1: 0, x2: 1, y2: 1,
+    stop: 0 #3A4A5A, stop: 1 #2E3B4E);
+    box-shadow: 0 6px 11px rgba(0, 0, 0, 0.4);
+}
+
+ QPushButton:pressed {
+    background: #3A4A5A;
+    box-shadow: 1px 2px 4px rgba(0, 0, 0, 0.4);
+}
+
+ QLineEdit {
+    background: #3A4A5A;
+    border: 1px solid #3B4A5A;
+    color: white;
+    border-radius: 8px;
+    padding: 6px;
+}
+
+ QComboBox {
+    background: #3A4A5A;
+    border: 1px solid #3B4A5A;
+    color: white;
+    font-family: "Microsoft YaHei";
+    font-size: 12px;
+    font-weight: bold;
+    border-radius: 8px;
+    padding: 6px;
+}
+
+ QSlider {
+    background: #3A4A5A;
+    border-radius: 8px;
+}
+
+ QCheckBox {
+    color: white;
+    font-size: 14px;
+}
+
+ QScrollBar:vertical {
+    background-color: #4C5B6D;
+    border-radius: 8px;
+    width: 11px;
+}
+
+ QScrollBar::handle:vertical {
+    background-color: #3A4A5A;
+    border-radius: 8px;
+}
+
+ QScrollBar::handle:vertical:hover {
+    background-color: #2E3B4E;
+}
+
+ QMenuBar {
+    background-color: #3A4A5A;
+    border-radius: 8px;
+}
+
+ QMenuBar::item:selected {
+    background-color: #4C5B6D;
+    color: white;
+}
+
+ QTextEdit {
+    background-color: #3A4A5A;
+    border: 1px solid #3B4A5A;
+    color: white;
+    font-size: 14px;
+    font-family: 'Segoe UI', sans-serif;
+    border-radius: 8px;
+    padding: 8px;
+    box-shadow: inset 0 4px 6px rgba(0, 0, 0, 0.3);
+}
+
+ QTextEdit:focus {
+    border: 1px solid #4C5B6D;
+}
+
+ QLabel {
+    font-family: "Microsoft YaHei";
+    font-size: 12px;
+    font-weight: bold;
+    color: #FFFFFF;
+}
+
+ QMessageBox {
+    background-color: #2E3B4E;
+    border: none;
+    color: white;
+    font-family: 'Segoe UI', sans-serif;
+    font-size: 12pt;
+}
+  statusBar {
+    background-color: #2E3B4E;
+    border: none;
+    color: white;
+}
