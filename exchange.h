@@ -15,6 +15,11 @@ public:
     explicit Exchange(QWidget *parent = nullptr);
     ~Exchange();
 
+private slots:
+    void on_closeButton_clicked();
+
+    void on_exchangeButton_clicked();
+
 private:
     Ui::Exchange *ui;
 };

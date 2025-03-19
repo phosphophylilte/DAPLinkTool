@@ -11,8 +11,8 @@ extern QString startAddress;
 /***
  * 用户自设状态标志
  * bit0：是否确认烧写 writeFlashSure
- * bit1：
- * bit2：
+ * bit1：是否确认转换 exchangeFileSure
+ * bit2：文件转换类型（0为bin，1为hex） exchangeFileType
  * bit3：
  * bit4：
  * bit5：

@@ -5,6 +5,7 @@
 #include <QtWidgets>
 #include <QEventLoop>
 #include <QProcess>
+#include <QByteArray>
 #include <qfiledialog.h>
 #include <qmessagebox.h>
 #include <qdrag.h>
@@ -25,6 +26,9 @@ public:
 
 private:
     void statuShow(QString string);
+
+signals:
+    void fileNameSignals(QString string);
 
 private slots:
     void on_ChooseFileButton_clicked();

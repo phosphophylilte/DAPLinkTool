@@ -30,6 +30,10 @@ MainWindow::MainWindow(QWidget *parent)
     // 连接 QProcess 的信号，获取输出内容
     connect(process, &QProcess::readyReadStandardOutput, this, &MainWindow::cmdProcessOutput);
 
+    connect(ui->ExchangeButton, SIGNAL(clicked()), this, SLOT(&MainWindow::on_ExchangeButton_clicked));
+
+//    connect(this, SIGNAL(fileNameSignals(QString)), this, SLOT(on_ExchangeButton_clicked(QString)));
+
     setAcceptDrops(true);
 }
 
@@ -81,10 +85,64 @@ void MainWindow::dropEvent(QDropEvent *event) {
 // 利用openocd转换
 void MainWindow::on_ExchangeButton_clicked()
 {
-    Exchange *obj = new Exchange();
+    if(ui->FilePathLine->text().isEmpty())
+    {
+        QMessageBox::warning(this, "注意", "文件路径不能为空");
+        return;
+    }
+    //失能按钮
     statuShow("Exchanging...");
-    obj->show();
+    ui->ProgramButton->setDisabled(true);
+    ui->ExchangeButton->setDisabled(true);
 
+    //清除标志位bit1~2
+    eventFlag &= ~0x60;
+
+    //设置新弹出的窗口为销毁属性
+    Exchange *obj = new Exchange();
+    obj->setAttribute(Qt::WA_DeleteOnClose);
+
+    //新建QEventLoop，窗口弹出后将槽函数堵塞
+    QEventLoop loop1;
+
+    //绑定信号，Programmer对象销毁时结束loop
+    connect(obj, &Programmer::destroyed, &loop1, &QEventLoop::quit);
+
+    //显示窗口，开始堵塞
+    obj->show();
+    loop1.exec();
+
+    //结束堵塞后使能按钮
+    ui->ProgramButton->setDisabled(false);
+    ui->ExchangeButton->setDisabled(false);
+
+    //提取文件类型（获取最后一个.后的内容）
+    QString fileNameString = ui->FilePathLine->text();
+    QString extension = fileNameString.section('.',-1);
+    QString filePath = fileNameString.chopped(3);  // 删除3个字符(文件类型)
+    QString commandExchanger;
+
+    if(eventFlag & 0x40)
+    {
+        if(extension == "bin" || extension == "hex")
+        {
+            QMessageBox::warning(this, "注意", "仅对elf文件转化");
+            return;
+        }
+
+        switch((eventFlag & 0x20)>>5)
+        {
+        case 0: commandExchanger = "arm-none-eabi-objcopy -O binary \"" + fileNameString + "\" \"" + filePath + ".bin\""; break;
+        case 1: commandExchanger = "arm-none-eabi-objcopy -O ihex \"" + fileNameString + "\" \"" + filePath + ".hex\""; break;
+        default: break;
+        }
+
+        ui->textEdit->insertPlainText(commandExchanger);
+
+        // 设置 QProcess 隐藏 CMD 窗口
+        process->setProcessChannelMode(QProcess::MergedChannels);  // 合并标准输出和错误输出
+        process->start(commandExchanger);  // 替换为你的 CMD 命令
+    }
 }
 
 // 利用openocd烧录
@@ -98,6 +156,7 @@ void MainWindow::on_ProgramButton_clicked()
     //失能按钮
     statuShow("Programming...");
     ui->ProgramButton->setDisabled(true);
+    ui->ExchangeButton->setDisabled(true);
 
     //清除标志位bit0
     eventFlag &= ~0x80;
@@ -116,8 +175,9 @@ void MainWindow::on_ProgramButton_clicked()
     obj->show();
     loop.exec();
 
-    //结束堵塞后使能窗口
+    //结束堵塞后使能按钮
     ui->ProgramButton->setDisabled(false);
+    ui->ExchangeButton->setDisabled(false);
 
     //提取字符串，发送烧录指令
     QString interfaceName = ui->interfaceCfg->currentText();
@@ -168,3 +228,4 @@ void MainWindow::appendColoredText(const QString &text) {
         }
         ui->textEdit->append(text);
 }
+
